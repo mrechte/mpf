@@ -60,7 +60,9 @@ class Credits(Mode):
         self.machine.settings.add_setting(SettingEntry("free_play", "Free Play", 500,
                                                        "free_play", self.credits_config['free_play'],
                                                        {True: "Free Play", False: "Credit Play"}, "coin"))
-
+        self.machine.settings.set_setting_value("free_play", self.credits_config['free_play'])
+        
+        
     def mode_start(self, **kwargs):
         """Start mode."""
         self.add_mode_event_handler('enable_free_play',
