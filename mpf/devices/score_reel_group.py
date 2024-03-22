@@ -77,7 +77,7 @@ class ScoreReelGroup(SystemWideDevice):
         del kwargs
         chime.pulse()
 
-    def set_value(self, value):
+    def set_value(self, value, quiet=False):
         """Reset the score reel group to display the value passed.
 
         This method will "jump" the score reel group to display the value
@@ -112,7 +112,7 @@ class ScoreReelGroup(SystemWideDevice):
             if not self.reels[i]:
                 continue
 
-            self.reels[i].set_destination_value(self.desired_value_list[i])
+            self.reels[i].set_destination_value(self.desired_value_list[i], quiet)
 
     async def wait_for_ready(self):
         """Return a future which will be done when all reels reached their destination."""
