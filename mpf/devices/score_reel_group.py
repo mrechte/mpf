@@ -109,7 +109,7 @@ class ScoreReelGroup(SystemWideDevice):
         for i, reel in enumerate(self.reels):
             if not reel:
                 continue
-            reel.set_destination_value(self.desired_value_list[i])
+            reel.set_destination_value(self.desired_value_list[i], quiet)
 
     async def wait_for_ready(self):
         """Return a future which will be done when all reels reached their destination."""

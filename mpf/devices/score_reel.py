@@ -202,7 +202,6 @@ class ScoreReel(SystemWideDevice):
 
             self._destination_value = value
             self._quiet = quiet
-            print(self._quiet)
 
             self._busy.set()
             self._ready.clear()
