@@ -43,11 +43,11 @@ class BcpTransportManager:
 
     def register_transport(self, transport, future=None, **kwargs):
         """Register a client."""
-        del future
         del kwargs
-        self._transports.append(transport)
-        self._readers[transport] = self._machine.clock.loop.create_task(self._receive_loop(transport))
-        self._readers[transport].add_done_callback(Util.raise_exceptions)
+        if future.result():
+            self._transports.append(transport)
+            self._readers[transport] = self._machine.clock.loop.create_task(self._receive_loop(transport))
+            self._readers[transport].add_done_callback(Util.raise_exceptions)
 
     async def _receive_loop(self, transport: BaseBcpClient):
         while True:
