@@ -29,10 +29,7 @@ class PluginPlayer(DeviceConfigPlayer):
     def _get_bcp_client(self, config):
         client_name = config.get('bcp_connection', "local_display")
         client = self.machine.bcp.transport.get_named_client(client_name)
-        if not client:
-            raise AssertionError(
-                "bcp connection {} not found".format(client_name))
-
+        # client may be None if BCP connection could not be established
         return client
 
     def _add_handlers(self):
@@ -56,11 +53,11 @@ class PluginPlayer(DeviceConfigPlayer):
             if getattr(self.machine, 'is_shutting_down', False):
                 return events
             self.bcp_client = self._get_bcp_client(config)
-
-            self.machine.bcp.interface.add_registered_trigger_event_for_client(
-                self.bcp_client, '{}_play'.format(self.show_section))
-            self.machine.bcp.interface.add_registered_trigger_event_for_client(
-                self.bcp_client, '{}_clear'.format(self.show_section))
+            if self.bcp_client:
+                self.machine.bcp.interface.add_registered_trigger_event_for_client(
+                    self.bcp_client, '{}_play'.format(self.show_section))
+                self.machine.bcp.interface.add_registered_trigger_event_for_client(
+                    self.bcp_client, '{}_clear'.format(self.show_section))
 
         return events
 
