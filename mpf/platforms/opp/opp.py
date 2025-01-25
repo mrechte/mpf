@@ -14,6 +14,7 @@ from mpf.core.utility_functions import Util
 from mpf.platforms.base_serial_communicator import HEX_FORMAT
 
 from mpf.platforms.interfaces.driver_platform_interface import PulseSettings, HoldSettings
+from mpf.platforms.interfaces.dmd_platform import DmdPlatformInterface
 
 from mpf.platforms.opp.opp_coil import OPPSolenoidCard
 from mpf.platforms.opp.opp_incand import OPPIncandCard
@@ -24,6 +25,7 @@ from mpf.platforms.opp.opp_switch import OPPMatrixCard
 from mpf.platforms.opp.opp_servo import OPPServo
 from mpf.platforms.opp.opp_rs232_intf import OppRs232Intf
 from mpf.core.platform import SwitchPlatform, DriverPlatform, LightsPlatform, ServoPlatform, \
+    DmdPlatform, RgbDmdPlatform, \
     SwitchSettings, DriverSettings, DriverConfig, SwitchConfig, RepulseSettings
 
 MYPY = False
@@ -34,7 +36,7 @@ if MYPY:   # pragma: no cover
 
 
 # pylint: disable-msg=too-many-instance-attributes
-class OppHardwarePlatform(LightsPlatform, SwitchPlatform, DriverPlatform, ServoPlatform):
+class OppHardwarePlatform(LightsPlatform, SwitchPlatform, DriverPlatform, ServoPlatform, DmdPlatform, RgbDmdPlatform):
 
     """Platform class for the OPP hardware.
 
@@ -1162,3 +1164,38 @@ class OppHardwarePlatform(LightsPlatform, SwitchPlatform, DriverPlatform, ServoP
             self.raise_config_error("Servo unavailable at this number: {}.".format(number), 24)
 
         return OPPServo(chain_serial, servo_number, self)
+
+    def configure_dmd(self):
+        """Configure DMD."""
+        return VirtualDmd()
+
+    def configure_rgb_dmd(self, name: str):
+        """Configure DMD."""
+        del name
+        return VirtualDmd()
+
+
+class VirtualDmd(DmdPlatformInterface):
+
+    """Virtual DMD."""
+
+    __slots__ = ["data", "brightness"]
+
+    def __init__(self) -> None:
+        """Initialize virtual DMD."""
+        self.data = None        # type: Optional[bytes]
+        self.brightness = None  # type: Optional[float]
+
+    def update(self, data: bytes):
+        """Update data on the DMD.
+
+        Args:
+        ----
+            data: bytes to send to DMD
+        """
+        self.data = data
+
+    def set_brightness(self, brightness: float):
+        """Set brightness."""
+        self.brightness = brightness
+
