@@ -1436,6 +1436,7 @@ rpi_dmd:
     gpio_slowdown:      single|int|1
     daemon:             single|bool|false
     drop_privileges:    single|bool|true
+    dmd_socket:         single|str|/tmp/dmd.socket
 score_queue_player:
     __valid_in__: mode
     __type__: config_player
