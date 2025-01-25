@@ -44,7 +44,8 @@ class BcpTransportManager:
     def register_transport(self, transport, future=None, **kwargs):
         """Register a client."""
         del kwargs
-        if future.result():
+        # always register if future is None, else it depends on the result
+        if not future or future.result():
             self._transports.append(transport)
             self._readers[transport] = self._machine.clock.loop.create_task(self._receive_loop(transport))
             self._readers[transport].add_done_callback(Util.raise_exceptions)
