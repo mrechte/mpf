@@ -216,7 +216,7 @@ class YamlMultifileConfigLoader(ConfigLoader):
                 self.log.debug("Loading mode %s from %s", mode, mpf_config_path)
                 mode_config_files.append(mpf_config_path)
             if os.path.isfile(machine_config_path):
-                self.log.debug("Loading mode %s from %s", mode, mpf_config_path)
+                self.log.debug("Loading mode %s from %s", mode, machine_config_path)
                 mode_config_files.append(machine_config_path)
 
             if not mode_config_files:
