@@ -301,6 +301,7 @@ bonus_entries:
     player_score_entry: single|str|None
     skip_if_zero: single|bool|true
     skip_if_negative: single|bool|false
+    final_show: single|str|None
 coils:
     __valid_in__: machine
     __type__: device
@@ -2319,6 +2320,7 @@ widgets:
         bold: single|bool_or_token|false
         italic: single|bool_or_token|false
         number_grouping: single|bool_or_token|false
+        digit_group_seperator: single|str|,
         min_digits: single|int_or_token|0
         halign: single|str|center
         valign: single|str|middle
@@ -2356,6 +2358,7 @@ widgets:
         bold: single|bool_or_token|false
         italic: single|bool_or_token|false
         number_grouping: single|bool_or_token|false
+        digit_group_seperator: single|str|,
         min_digits: single|int_or_token|0
         max_chars: single|int_or_token|3
         char_list: "single|str|ABCDEFGHIJKLMNOPQRSTUVWXYZ_- "
