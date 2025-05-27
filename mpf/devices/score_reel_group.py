@@ -58,7 +58,9 @@ class ScoreReelGroup(SystemWideDevice):
         await super()._initialize()
         self.reels = self.config['reels']
         self.reels.reverse()  # We want our smallest digit in the 0th element
-
+        if (self.config['overflow_light']):
+            if self.config['overflow_light'] not in self.machine.lights:
+                self.raise_config_error("Score reel group overflow light %s does not exist" % self.config['overflow_light'], 1000)
         self.config['chimes'].reverse()
         for i in range(len(self.config['chimes'])):
 
