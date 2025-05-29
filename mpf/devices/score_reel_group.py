@@ -27,6 +27,7 @@ class ScoreReelGroup(SystemWideDevice):
         """Initialize score reel group."""
         super().__init__(machine, name)
 
+        self.overflow_light = None
         self.wait_for_valid_queue = None
         self.valid = True  # Confirmed reels are showing the right values
         self.unlight_on_resync_key = None
@@ -58,9 +59,10 @@ class ScoreReelGroup(SystemWideDevice):
         await super()._initialize()
         self.reels = self.config['reels']
         self.reels.reverse()  # We want our smallest digit in the 0th element
-        if (self.config['overflow_light']):
+        if self.config['overflow_light']:
             if self.config['overflow_light'] not in self.machine.lights:
                 self.raise_config_error("Score reel group overflow light %s does not exist" % self.config['overflow_light'], 1000)
+            self.overflow_light = self.machine.lights[self.config['overflow_light']]
         self.config['chimes'].reverse()
         for i in range(len(self.config['chimes'])):
 
@@ -99,7 +101,7 @@ class ScoreReelGroup(SystemWideDevice):
                 should be. This is the default option if you only pass a single
                 positional argument, e.g. `set_value(2100)`.
         """
-        value_list = self.int_to_reel_list(value)
+        value_list, overflow = self.int_to_reel_list(value)
 
         self.log.debug("Jumping to %s.", value_list)
 
@@ -112,6 +114,13 @@ class ScoreReelGroup(SystemWideDevice):
             if not reel:
                 continue
             reel.set_destination_value(self.desired_value_list[i], quiet)
+
+        # Overflow light, reset when value = 0 and set when overflows
+        if self.overflow_light:
+            if value == 0:
+                self.overflow_light.clear_stack()
+            elif overflow:
+                self.overflow_light.color("white")
 
     async def wait_for_ready(self):
         """Return a future which will be done when all reels reached their destination."""
@@ -129,7 +138,7 @@ class ScoreReelGroup(SystemWideDevice):
         plastic zero inserts that are not controlled by a score reel unit.
 
         For example, if you have a 5-digit score reel group that has 4
-        phyiscial reels in the tens through ten-thousands position and a fake
+        physical reels in the tens through ten-thousands position and a fake
         plastic "0" insert for the ones position, if you pass this method a
         value of `12300`, it will return `[None, 0, 3, 2, 1]`
 
@@ -139,12 +148,16 @@ class ScoreReelGroup(SystemWideDevice):
         returns list would correspond to 0000, since your score reel unit has
         rolled over.)
 
+        The overflow status is returned (True if trim occured).
+
         Args:
         ----
-            value: The interger value you'd like to convert.
+            value: The integer value you'd like to convert.
 
-        Returns a list containing the values for each corresponding score reel,
-        with the lowest reel digit position in list position 0.
+        Returns a tuple of
+         - list containing the values for each corresponding score reel,
+           with the lowest reel digit position in list position 0.
+         - the overflow status
         """
         output_list = []
 
@@ -176,7 +189,7 @@ class ScoreReelGroup(SystemWideDevice):
             if not self.reels[i]:
                 output_list[i] = None
 
-        return output_list
+        return output_list, True if trim else False
 
     def light(self, **kwargs):
         """Light up this ScoreReelGroup based on the 'light_tag' in its config."""
