@@ -5,6 +5,24 @@ Mission Pinball Framework (MPF)
 
 <em>...Let's build a pinball machine!</em>
 
+What is special here ?
+----------------------
+
+This was forked mainly for my Fast Draw / Quick Draw EM project. A few modifications were directly merged on the original project, 
+some others were refused, and some may not be useful (or considered too dirty) to be included in mainstream.
+
+Score reel management:
+
+- add an overflow light when score exceeds reel group capacity
+- mute the chime when resetting scores.
+
+OPP / DMD support:
+
+- Few changes to allow a DMD with OPP platform
+
+For details, see `git log --author="Marc Rechté"`.
+
+
 What is Mission Pinball Framework?
 ----------------------------------
 
