@@ -28,6 +28,7 @@ class ScoreReelGroup(SystemWideDevice):
         super().__init__(machine, name)
 
         self.overflow_light = None
+        self.chime_disable_switch = None
         self.wait_for_valid_queue = None
         self.valid = True  # Confirmed reels are showing the right values
         self.unlight_on_resync_key = None
@@ -72,6 +73,10 @@ class ScoreReelGroup(SystemWideDevice):
                 self.machine.events.add_handler(event='reel_' + self.reels[i].name + '_advancing',
                                                 handler=self.chime,
                                                 chime=self.config['chimes'][i])
+        if self.config['chime_disable_switch']:
+            if self.config['chime_disable_switch'] not in self.machine.switches:
+                self.raise_config_error("Score reel group chime disable switch %s does not exist" % self.config['chime_disable_switch'], 1001)
+            self.chime_disable_switch = self.machine.switches[self.config['chime_disable_switch']]
 
     @classmethod
     def chime(cls, chime, **kwargs):
@@ -113,6 +118,8 @@ class ScoreReelGroup(SystemWideDevice):
         for i, reel in enumerate(self.reels):
             if not reel:
                 continue
+            if self.chime_disable_switch.state == 1: 
+                quiet = True
             reel.set_destination_value(self.desired_value_list[i], quiet)
 
         # Overflow light, reset when value = 0 and set when overflows

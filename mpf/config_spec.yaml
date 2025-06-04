@@ -1477,6 +1477,7 @@ score_reel_groups:
     reels: list|machine(score_reels)|
     overflow_light: single|str|None
     chimes: list|machine(coils)|None
+    chime_disable_switch: single|str|None
     lights_tag: single|str|None
 segment_displays:
     __valid_in__: machine
