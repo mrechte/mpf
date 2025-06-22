@@ -118,7 +118,7 @@ class ScoreReelGroup(SystemWideDevice):
         for i, reel in enumerate(self.reels):
             if not reel:
                 continue
-            if self.chime_disable_switch.state == 1: 
+            if self.chime_disable_switch and self.chime_disable_switch.state == 1:
                 quiet = True
             reel.set_destination_value(self.desired_value_list[i], quiet)
 
