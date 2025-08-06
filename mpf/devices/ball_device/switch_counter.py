@@ -56,7 +56,7 @@ class SwitchCounter(PhysicalBallCounter):
         if self.config['exit_count_delay'] > min(
                 self.ball_device.config['eject_timeouts'].values()):
             self.ball_device.raise_config_error('Configuration error in {} ball device. '
-                                                'all eject_timeouts have to be larger than '
+                                                'All eject_timeouts have to be larger than '
                                                 'exit_count_delay'.
                                                 format(self.ball_device.name), 6)
 
@@ -64,7 +64,7 @@ class SwitchCounter(PhysicalBallCounter):
         if self.config['entrance_count_delay'] > min(
                 self.ball_device.config['eject_timeouts'].values()):
             self.ball_device.raise_config_error('Configuration error in {} ball device. '
-                                                'all eject_timeouts have to be larger than '
+                                                'All eject_timeouts have to be larger than '
                                                 'entrance_count_delay'.
                                                 format(self.ball_device.name), 7)
 

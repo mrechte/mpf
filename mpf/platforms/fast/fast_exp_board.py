@@ -122,10 +122,6 @@ class FastExpansionBoard:
                                            f'Actual: {firmware_version}. Update at fastpinball.com/firmware')
 
             brk = self.breakouts[brk_board]
-
-            if product_id != brk.model:
-                raise AssertionError(f'EXP Board {self}, Breakout Port {brk.index}: '
-                                     f'Config is set for {brk.model}, but actually found "{id_string}"')
             brk.hw_verified = True
 
         else:

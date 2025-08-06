@@ -1,4 +1,6 @@
 import time
+import sys
+import unittest
 
 from mpf.platforms.interfaces.segment_display_platform_interface import FlashingType
 from mpf.platforms.lisy import lisy
@@ -114,6 +116,7 @@ class MockLisySocket(MockSocket, MockSerial):
         self.api_version = api_version
 
 
+@unittest.skipIf(sys.version_info >= (3, 12), "LISY tests not updated for 3.12 asyncio")
 class TestLisy(MpfTestCase):
 
     def get_config_file(self):

@@ -103,7 +103,7 @@ class FASTDriver:
         if mpf_config.default_pulse_ms > 255:
             raise ConfigFileError("FAST platform does not support default_pulse_ms > 255. Use "
                                   f"platform_settings:pwm2_ms which goes up to 25,500ms. Coil '{mpf_config.name}'.",
-                                  7, self.log.name)
+                                  8, self.log.name)
 
         pwm2_ms, pwm2_power, recycle_ms = self._get_platform_settings(mpf_config, platform_settings)
 
@@ -248,6 +248,7 @@ class FASTDriver:
         else:
             self.log.debug("Received disable command for driver %s but reenabled autofire instead", self.number)
 
+    # pylint: disable-msg=too-many-statements
     def set_hardware_rule(self, mode, switch, coil_settings, **kwargs):  # noqa: MC0001
         """Write a hardware rule to the FAST controller for this driver."""
         self.log.debug("Setting hardware rule for driver %s. Mode: %s. Switch: %s. coil_settings: %s. kwargs: %s.",

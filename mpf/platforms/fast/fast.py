@@ -45,7 +45,7 @@ class FastHardwarePlatform(ServoPlatform, LightsPlatform, RgbDmdPlatform,
                  "io_boards", "io_boards_by_name", "switches_initialized",
                  "drivers_initialized", "audio_interface"]
 
-    port_types = ['net', 'exp', 'aud', 'dmd', 'rgb', 'seg', 'emu']
+    port_types = ['net', 'exp', 'exp_int', 'aud', 'dmd', 'rgb', 'seg', 'emu']
 
     def __init__(self, machine):
         """Initialize FAST hardware platform.
@@ -79,7 +79,7 @@ class FastHardwarePlatform(ServoPlatform, LightsPlatform, RgbDmdPlatform,
         elif self.machine_type == 'no_net':
             pass
         else:
-            self.raise_config_error(f'Unknown machine_type "{self.machine_type}" configured fast.', 6)
+            self.raise_config_error(f'Unknown machine_type "{self.machine_type}" could not be configured by FAST.', 6)
 
         # Even though System11 uses ticks, that's handled on the Overlay and not needed here.
         self.features['tickless'] = True
@@ -247,6 +247,11 @@ class FastHardwarePlatform(ServoPlatform, LightsPlatform, RgbDmdPlatform,
                     FastExpCommunicator
                 communicator = FastExpCommunicator(platform=self, processor=port, config=config)
                 self.serial_connections['exp'] = communicator
+            elif port == 'exp_int':
+                from mpf.platforms.fast.communicators.exp import \
+                    FastExpCommunicator
+                communicator = FastExpCommunicator(platform=self, processor=port, config=config)
+                self.serial_connections['exp_int'] = communicator
             elif port == 'seg':
                 from mpf.platforms.fast.communicators.seg import \
                     FastSegCommunicator
@@ -663,9 +668,8 @@ class FastHardwarePlatform(ServoPlatform, LightsPlatform, RgbDmdPlatform,
 
         if device_num > devices_per_port:
             if name:
-                # TODO get a final error code
                 self.raise_config_error(f"Device number {device_num} exceeds the number of devices per port "
-                                        f"({devices_per_port}) for LED {name}", 8)
+                                        f"({devices_per_port}) for LED {name}", 9)
             else:
                 raise AssertionError(f"Device number {device_num} exceeds the number of devices per port "
                                      f"({devices_per_port})")

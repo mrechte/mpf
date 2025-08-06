@@ -42,7 +42,7 @@ class VariablePlayer(ConfigPlayer):
 
             if s['action'] not in ("set", "set_machine"):
                 self.raise_config_error('Cannot use add on subscriptions. '
-                                        'Use action set or set_machine.', 8, context=context)
+                                        'Use action set or set_machine.', 9, context=context)
 
             args = {"value": value}
 

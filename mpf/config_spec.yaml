@@ -450,7 +450,7 @@ diverters:
     __type__: device
     activate_events: event_handler|event_handler:ms|None
     activation_coil: single|machine(coils)|None
-    activation_time: single|ms|0
+    activation_time: single|template_ms|None
     activation_switches: list|machine(switches)|None
     allow_multiple_concurrent_ejects_to_same_side: single|bool|true
     cool_down_time: single|ms|0
@@ -623,6 +623,7 @@ fast:
     __type__: config
     net: single|subconfig(fast_net)|None
     exp: single|subconfig(fast_exp)|None
+    exp_int: single|subconfig(fast_exp)|None    
     aud: single|subconfig(fast_aud)|None
     seg: single|subconfig(fast_seg)|None
     dmd: single|subconfig(fast_dmd)|None
@@ -2404,3 +2405,12 @@ window:
     top: single|int|None
     no_window: single|bool|false
     effects: ignore
+
+zedmd:
+    __valid_in__: machine
+    __type__: config_dict
+    console_log: single|enum(none,basic,full)|none
+    file_log: single|enum(none,basic,full)|basic
+    debug: single|bool|false
+    width: single|int|32
+    height: single|int|32

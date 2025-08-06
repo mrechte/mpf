@@ -89,11 +89,9 @@ class PKONELEDChannel(PlatformBatchLight):
 
     def get_board_name(self):
         """Return the board of this light."""
-        return "PKONE LED Channel {} on Lightshow Board (Address ID {}, Group {}, Light: {}, " \
-               "Hardware Aligned: {})".format(self.index,
-                                              self.board_address_id,
+        return "PKONE Lightshow Board (Address ID {}, Group {}, " \
+               "Hardware Aligned: {})".format(self.board_address_id,
                                               self.group,
-                                              self.config.name,
                                               "Yes" if self._hardware_aligned else "No")
 
     def is_successor_of(self, other):

@@ -114,7 +114,7 @@ class Show:
 
         if step_num < total_steps_num - 1 and 'time' in data[step_num + 1]:     # pragma: no cover
             self._show_validation_error("Found invalid 'time' entry in step after {} which contains a duration. "
-                                        "Remove either of them!".format(step_num), 2)
+                                        "Remove either of them!".format(step_num), 8)
         return Util.string_to_secs(step['duration'])
 
     def load(self, data: Optional[Dict]):

@@ -80,8 +80,8 @@ class OPPModernLightChannel(PlatformBatchLight):
 
     def get_board_name(self):
         """Return OPP chain and addr."""
-        return "OPP Light {} on Chain {} Board {} Type {}".format(
-            self.pixel_num, self.chain_serial, self.addr, self.get_type_string())
+        return "OPP Chain {} Board {} Type {}".format(
+            self.chain_serial, self.addr, self.get_type_string())
 
     def is_successor_of(self, other):
         """Return true if the other light has the previous pixel_num and is on the same chain and addr."""

@@ -258,7 +258,7 @@ class Diverter(SystemWideDevice):
     def schedule_deactivation(self):
         """Schedule a delay to deactivate this diverter."""
         if self.config['activation_time']:
-            self.delay.add(name='deactivate_timed', ms=self.config['activation_time'],
+            self.delay.add(name='deactivate_timed', ms=self.config['activation_time'].evaluate({}),
                            callback=self.deactivate)
 
     def _enable_switches(self):

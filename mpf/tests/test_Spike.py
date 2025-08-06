@@ -1,6 +1,8 @@
 """Test Stern Spike Platform."""
 import time
 import serial_asyncio
+import sys
+import unittest
 
 from mpf.platforms.spike.spike import SpikePlatform
 
@@ -128,6 +130,7 @@ class MockSpikeSocket(MockSerial):
         self.dirty_nodes = []
 
 
+@unittest.skipIf(sys.version_info >= (3, 12), "SPIKE tests not updated for 3.12 asyncio")
 class SpikePlatformTest(MpfTestCase):
 
     @staticmethod
@@ -648,6 +651,7 @@ class SpikePlatformTest(MpfTestCase):
         self.assertEventCalledWith("stepper_stepper1_ready", position=500)
 
 
+@unittest.skipIf(sys.version_info >= (3, 12), "SPIKE tests not updated for 3.12 asyncio")
 class SpikePlatformFirmware0_49Test(MpfTestCase):
 
     @staticmethod

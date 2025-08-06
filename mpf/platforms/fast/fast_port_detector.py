@@ -82,7 +82,7 @@ class FastPortDetector:
                 try:
                     data = await asyncio.wait_for(reader.read(100), timeout=1.0)
                 except asyncio.TimeoutError:
-                    pass
+                    data = None
 
                 if data:
                     data = data.decode('utf-8', errors='ignore')

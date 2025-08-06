@@ -236,17 +236,19 @@ class Auditor(MpfPlugin):
                 if item not in self.machine.game.player.vars:
                     continue
 
+                value = player[item]
+
                 self.current_audits['player'][item]['top'] = (
                     self._merge_into_top_list(
-                        player[item],
+                        value,
                         self.current_audits['player'][item]['top'],
                         self.config['num_player_top_records']))
 
-                self.current_audits['player'][item]['average'] = int(
-                    ((self.current_audits['player'][item]['total'] *
-                      self.current_audits['player'][item]['average']) +
-                     self.machine.game.player[item]) /
-                    (self.current_audits['player'][item]['total'] + 1))
+                self.current_audits['player'][item]['average'] = int((
+                    (self.current_audits['player'][item]['total']
+                        * self.current_audits['player'][item]['average'])
+                    + value
+                ) / (self.current_audits['player'][item]['total'] + 1))
 
                 self.current_audits['player'][item]['total'] += 1
         if self._autosave:

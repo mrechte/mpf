@@ -588,7 +588,7 @@ class ConfigValidator:
             try:
                 return Util.string_to_secs(item)
             except ValueError:
-                raise self.validation_error(item, validation_failure_info, "Cannot convert value to secs.", 11)
+                raise self.validation_error(item, validation_failure_info, "Cannot convert value to secs.", 10)
 
         return None
 

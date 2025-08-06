@@ -425,8 +425,8 @@ class Shot(EnableDisableMixin, ModeDevice):
     def _register_control_event_handlers(self):
         for control_event in self.config['control_events']:
             for event in control_event['events']:
-                self._handlers.append(self.machine.events.add_handler(event, self._control_events,
-                                                                      control_event_config=control_event))
+                self.machine.events.add_handler(event, self._control_events,
+                                                control_event_config=control_event)
 
     @event_handler(7)
     def _control_events(self, control_event_config, **kwargs):

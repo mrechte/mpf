@@ -40,12 +40,12 @@ class TestLightGroups(MpfTestCase):
 
         # stripe 3
         self.assertEqual("led-ABC-123", self.machine.lights["stripe3_light_0"].hw_drivers["red"][0].number)
-        self.assertEqual("led-led-ABC-123+1", self.machine.lights["stripe3_light_0"].hw_drivers["green"][0].number)
-        self.assertEqual("led-led-led-ABC-123+1+1",
+        self.assertEqual("led-ABC-123+1", self.machine.lights["stripe3_light_0"].hw_drivers["green"][0].number)
+        self.assertEqual("led-ABC-123+2",
                          self.machine.lights["stripe3_light_0"].hw_drivers["blue"][0].number)
-        self.assertEqual("led-led-led-led-ABC-123+1+1+1",
+        self.assertEqual("led-ABC-123+3",
                          self.machine.lights["stripe3_light_0"].hw_drivers["white"][0].number)
-        self.assertEqual("led-led-led-led-led-ABC-123+1+1+1+1",
+        self.assertEqual("led-ABC-123+4",
                          self.machine.lights["stripe3_light_1"].hw_drivers["red"][0].number)
 
         # ring 1
@@ -69,8 +69,8 @@ class TestLightGroups(MpfTestCase):
 
         # neoSeg_0
         self.assertEqual("led-0-0-0", self.machine.lights["neoSeg_0_light_0"].hw_drivers["white"][0].number)
-        self.assertEqual("led-led-0-0-0+1", self.machine.lights["neoSeg_0_light_1"].hw_drivers["white"][0].number)
-        self.assertEqual("led-led-led-0-0-0+1+1", self.machine.lights["neoSeg_0_light_2"].hw_drivers["white"][0].number)
+        self.assertEqual("led-0-0-0+1", self.machine.lights["neoSeg_0_light_1"].hw_drivers["white"][0].number)
+        self.assertEqual("led-0-0-0+2", self.machine.lights["neoSeg_0_light_2"].hw_drivers["white"][0].number)
         self.assertEqual("neoSeg_0_light_119", self.machine.lights["neoSeg_0_light_119"].name)
         # sanity check order...not 100%
         self.assertEqual(self.machine.neoseg_displays["neoSeg_0"].lights[0].name, self.machine.lights["neoSeg_0_light_95"].name)
@@ -83,8 +83,8 @@ class TestLightGroups(MpfTestCase):
 
         # neoSeg_1
         self.assertEqual("led-0-0-120", self.machine.lights["neoSeg_1_light_0"].hw_drivers["white"][0].number)
-        self.assertEqual("led-led-0-0-120+1", self.machine.lights["neoSeg_1_light_1"].hw_drivers["white"][0].number)
-        self.assertEqual("led-led-led-0-0-120+1+1", self.machine.lights["neoSeg_1_light_2"].hw_drivers["white"][0].number)
+        self.assertEqual("led-0-0-120+1", self.machine.lights["neoSeg_1_light_1"].hw_drivers["white"][0].number)
+        self.assertEqual("led-0-0-120+2", self.machine.lights["neoSeg_1_light_2"].hw_drivers["white"][0].number)
         self.assertEqual("neoSeg_1_light_29", self.machine.lights["neoSeg_1_light_29"].name)
         # sanity check order...not 100%
         self.assertEqual(self.machine.neoseg_displays["neoSeg_1"].lights[0].name, self.machine.lights["neoSeg_1_light_5"].name)

@@ -315,25 +315,25 @@ class BallDevice(SystemWideDevice):
         if max(self.config['eject_timeouts'].values()) > min(
                 self.config['ball_missing_timeouts'].values()):
             self.raise_config_error('Configuration error in {} ball device. '
-                                    'all ball_missing_timeouts have to be larger '
+                                    'All ball_missing_timeouts have to be larger '
                                     'than all eject_timeouts'.
                                     format(self.name), 8)
 
         # all ball_missing_timeouts < incoming ball timeout
         if max(self.config['ball_missing_timeouts'].values()) > 60000:
             self.raise_config_error('Configuration error in {} ball device. '
-                                    'incoming ball timeout has to be larger '
+                                    'Incoming ball timeout has to be larger '
                                     'than all ball_missing_timeouts'.
                                     format(self.name), 9)
 
         if (self.config['confirm_eject_type'] == "switch" and
                 not self.config['confirm_eject_switch']):
-            self.raise_config_error("When using confirm_eject_type switch you " +
+            self.raise_config_error("When using confirm_eject_type switch you need " +
                                     "to specify a confirm_eject_switch", 7)
 
         if (self.config['confirm_eject_type'] == "event" and
                 not self.config['confirm_eject_event']):
-            self.raise_config_error("When using confirm_eject_type event you " +
+            self.raise_config_error("When using confirm_eject_type event you need " +
                                     "to specify a confirm_eject_event", 14)
 
         if "ball_add_live" in self.tags:
