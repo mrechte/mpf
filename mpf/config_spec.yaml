@@ -990,6 +990,13 @@ lisy:
     poll_hz: single|int|100
     port: single|str|None
     send_length_after_command: single|bool|false
+mc_system_player:
+    __valid_in__: machine, mode, show
+    __type__: config_player
+    block: single|bool|false
+    command: single|str|None
+    shell: single|bool|true
+    params: list|str|None
 logic_blocks_common:
     enable_events: event_handler|event_handler:ms|None
     disable_events: event_handler|event_handler:ms|None
