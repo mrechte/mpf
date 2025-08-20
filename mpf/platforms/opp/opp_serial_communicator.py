@@ -1,5 +1,6 @@
 """OPP serial communicator."""
 import asyncio
+from serial import SerialException
 
 from mpf.platforms.opp.opp_rs232_intf import OppRs232Intf
 
@@ -236,8 +237,7 @@ class OPPSerialCommunicator(BaseSerialCommunicator):
         return message_found
 
     async def drain_writer(self):
-        """Drain writer buffer.
-        """
+        """Drain writer buffer."""
         try:
             await self.writer.drain()
         except SerialException as e:
