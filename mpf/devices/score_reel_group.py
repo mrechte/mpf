@@ -108,7 +108,7 @@ class ScoreReelGroup(SystemWideDevice):
         """
         value_list, overflow = self.int_to_reel_list(value)
 
-        self.log.debug("Jumping to %s.", value_list)
+        self.debug_log("Jumping to %s.", value_list)
 
         # set the new desired value which we'll use to verify the reels land
         # where we want them to.
@@ -201,7 +201,7 @@ class ScoreReelGroup(SystemWideDevice):
     def light(self, **kwargs):
         """Light up this ScoreReelGroup based on the 'light_tag' in its config."""
         del kwargs
-        self.log.debug("Turning on Lights")
+        self.debug_log("Turning on Lights")
         for light in self.machine.lights.items_tagged(
                 self.config['lights_tag']):
             light.on()
@@ -209,7 +209,7 @@ class ScoreReelGroup(SystemWideDevice):
     def unlight(self, **kwargs):
         """Turn off the lights for this ScoreReelGroup based on the 'light_tag' in its config."""
         del kwargs
-        self.log.debug("Turning off Lights")
+        self.debug_log("Turning off Lights")
         for light in self.machine.lights.items_tagged(
                 self.config['lights_tag']):
             light.off()
