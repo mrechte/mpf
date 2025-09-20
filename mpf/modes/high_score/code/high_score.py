@@ -102,12 +102,10 @@ class HighScore(AsyncMode):
         for category, entries in self.high_score_config['categories'].items():
             try:
                 for position, (label, (name, value, *hs_vars)) in (
-                        enumerate(zip(entries,
-                                      self.high_scores[category]))):
+                        enumerate(zip(entries, self.high_scores[category]))):
 
-                    self.machine.variables.set_machine_var(
-                        name=category + str(position + 1) + '_label',
-                        value=label)
+                    var_name_base = category + str(position + 1) + "_"
+                    self.machine.variables.set_machine_var(name=var_name_base + 'label', value=label)
 
                     '''machine_var: (high_score_category)(position)_label
 
@@ -119,9 +117,7 @@ class HighScore(AsyncMode):
 
                     '''
 
-                    self.machine.variables.set_machine_var(
-                        name=category + str(position + 1) + '_name',
-                        value=name)
+                    self.machine.variables.set_machine_var(name=var_name_base + 'name', value=name)
 
                     '''machine_var: (high_score_category)(position)_name
 
@@ -130,9 +126,7 @@ class HighScore(AsyncMode):
 
                     '''
 
-                    self.machine.variables.set_machine_var(
-                        name=category + str(position + 1) + '_value',
-                        value=value)
+                    self.machine.variables.set_machine_var(name=var_name_base + 'value', value=value)
 
                     '''machine_var: (high_score_category)(position)_value
 
@@ -143,9 +137,7 @@ class HighScore(AsyncMode):
 
                     if len(hs_vars) > 0:
                         for k, v in hs_vars[0].items():
-                            self.machine.variables.set_machine_var(
-                                name=category + str(position + 1) + '_' + str(k),
-                                value=v)
+                            self.machine.variables.set_machine_var(name=var_name_base + str(k), value=v)
 
                     '''machine_var: (high_score_category)(position)_(variable)
 
@@ -227,19 +219,21 @@ class HighScore(AsyncMode):
 
     def _assign_vars(self, category_name, player):
         """Define all vars that are for the given category, and assign their values."""
-        # create dictionary of the variable name and its value, then load it for the category
         player_num_index = player.number - 1
-        var_dict = dict()
+        var_dict = dict()  # store the results of var lookups for the player entry being saved
+
         j = 0
-        while j < len(self.vars[category_name]) and bool(self.vars[category_name]):
-            if 'player' in self.vars[category_name][j][0]:
-                var_dict[self.vars[category_name][j][0] + '_' + self.vars[category_name][j][1]] \
-                    = self.machine.game.player_list[player_num_index][self.vars[category_name][j][1]]
-            else:
-                var_dict[self.vars[category_name][j][0] + '_' + self.vars[category_name][j][1]] \
-                    = self.machine.variables.get_machine_var(self.vars[category_name][j][1])
+        category_var_configuration = self.vars[category_name]
+        while j < len(category_var_configuration) and bool(category_var_configuration):
+            variable_type = category_var_configuration[j][0]
+            variable_name = category_var_configuration[j][1]
+            dict_key = variable_type + '_' + variable_name
+            if 'player' in variable_type:
+                var_dict[dict_key] = self.machine.game.player_list[player_num_index][variable_name]
+            else:  # else is machine variable
+                var_dict[dict_key] = self.machine.variables.get_machine_var(variable_name)
             j += 1
-        # return the dictionary of items for this specific player and category entry
+
         return var_dict
 
     # pylint: disable-msg=too-many-arguments
@@ -249,9 +243,7 @@ class HighScore(AsyncMode):
                       ", Value: %s", player, award_label, value)
 
         self.machine.events.post('high_score_enter_initials',
-                                 award=award_label,
-                                 player_num=player.number,
-                                 value=value)
+                                 award=award_label, player_num=player.number, value=value)
 
         event_result = await asyncio.wait_for(
             self.machine.events.wait_for_event("text_input_high_score_complete"),
@@ -276,23 +268,16 @@ class HighScore(AsyncMode):
         if not self.high_score_config['award_slide_display_time']:
             return
 
-        self.machine.events.post(
-            'high_score_award_display',
-            player_name=player_name,
-            award=award,
-            value=value)
-        self.machine.events.post(
-            '{}_award_display'.format(award),
-            player_name=player_name,
-            award=award,
-            value=value)
-        self.machine.events.post(
-            '{}_award_display'.format(category_name),
-            player_num=player_num,
-            player_name=player_name,
-            category_name=category_name,
-            award=award,
-            value=value)
+        self.machine.events.post('high_score_award_display',
+                                 player_name=player_name, award=award, value=value)
+
+        self.machine.events.post('{}_award_display'.format(award),
+                                 player_name=player_name, award=award, value=value)
+
+        self.machine.events.post('{}_award_display'.format(category_name),
+                                 player_name=player_name, award=award, value=value,
+                                 player_num=player_num, category_name=category_name)
+
         await asyncio.sleep(self.high_score_config['award_slide_display_time'] / 1000)
 
     def _write_scores_to_disk(self) -> None:
