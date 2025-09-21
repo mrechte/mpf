@@ -548,11 +548,6 @@ class Game(AsyncMode):
             self.debug_log("Game is ending. Cannot add player.")
             return False
 
-        for switch in self.machine.switches.items_tagged('reset'):
-            if self.machine.switch_controller.is_active(switch):
-                self.end_game()
-                return False
-
         if len(self.player_list) >= self.max_players:
             self.debug_log("Game is at max players. Cannot add another.")
             return False
