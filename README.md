@@ -27,7 +27,7 @@ On this same account, one will find the forked mpf-mc required to implement DMD.
 
 One will also require the following components on my gitlab account:
 
-- [DMD server](https//gitlab.com/mrechte/dmd-server2) to drive the DMD
+- [DMD server](https://gitlab.com/mrechte/dmd-server2) to drive the DMD
 - [OPP](https://gitlab.com/mrechte/open-pinball-project) the platform hardware and firmware
 
 Finaly the Fastdraw / Quickdraw projects may be found on:
